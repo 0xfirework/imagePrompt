@@ -11,10 +11,13 @@ export const metadata = {
   description: "Manage account and website settings.",
 };
 
+// Uses auth cookies and server data; mark dynamic
+export const dynamic = "force-dynamic";
+
 export default async function SettingsPage() {
   const user = await getCurrentUser();
   if (!user) {
-    redirect(authOptions?.pages?.signIn ?? "/login-clerk");
+    redirect(authOptions?.pages?.signIn ?? "/login");
   }
   return (
     <DashboardShell>

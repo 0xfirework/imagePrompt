@@ -24,6 +24,9 @@ export const metadata = {
   title: "Dashboard",
 };
 
+// Uses cookies + server queries; must be dynamic
+export const dynamic = "force-dynamic";
+
 // export type ClusterType = RouterOutputs["k8s"]["getClusters"][number];
 export default async function DashboardPage({
   params: { lang },
@@ -35,7 +38,7 @@ export default async function DashboardPage({
   //don't need to check auth here, because we have a global auth check in _app.tsx
   const user = await getCurrentUser();
   if (!user) {
-    redirect(authOptions?.pages?.signIn ?? "/login-clerk");
+    redirect(authOptions?.pages?.signIn ?? "/login");
   }
   const customer = await trpc.customer.queryCustomer.query({
     userId: user.id,

@@ -10,6 +10,9 @@ export const metadata = {
   title: "Pricing",
 };
 
+// Reads auth and user subscription; render dynamically
+export const dynamic = "force-dynamic";
+
 export default async function PricingPage({
   params: { lang },
 }: {

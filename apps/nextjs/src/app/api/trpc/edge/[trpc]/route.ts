@@ -1,16 +1,17 @@
 import type {NextRequest} from "next/server";
 import {fetchRequestHandler} from "@trpc/server/adapters/fetch";
 
-import {createTRPCContext} from "@saasfly/api";
-import {edgeRouter} from "@saasfly/api/edge";
-import {getAuth} from "@clerk/nextjs/server";
+import { createTRPCContext } from "@saasfly/api";
+import { edgeRouter } from "@saasfly/api/edge";
+import { getToken } from "next-auth/jwt";
 
 // export const runtime = "edge";
 const createContext = async (req: NextRequest) => {
-    return createTRPCContext({
-        headers: req.headers,
-        auth: getAuth(req),
-    });
+  const token = await getToken({ req });
+  return createTRPCContext({
+    headers: req.headers,
+    auth: { userId: (token?.id as string) ?? null },
+  });
 };
 
 const handler = (req: NextRequest) =>

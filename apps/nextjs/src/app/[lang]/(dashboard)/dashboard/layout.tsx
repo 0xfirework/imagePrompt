@@ -22,6 +22,9 @@ export function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
+// Dashboard uses auth cookies and server queries; force dynamic rendering
+export const dynamic = "force-dynamic";
+
 export default async function DashboardLayout({
   children,
   params: { lang },

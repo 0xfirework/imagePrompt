@@ -17,6 +17,9 @@ export const metadata = {
   description: "Manage billing and your subscription plan.",
 };
 
+// Reads auth state and cookies; do not prerender
+export const dynamic = "force-dynamic";
+
 interface Subscription {
   plan: string | null;
   endsAt: Date | null;

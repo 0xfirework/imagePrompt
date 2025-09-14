@@ -11,9 +11,9 @@ import { callProcedure } from "@trpc/server";
 import { TRPCErrorResponse } from "@trpc/server/rpc";
 import { cache } from "react";
 import { appRouter } from "../../../../packages/api/src/root";
-import { auth } from "@clerk/nextjs/server";
+import { getCurrentUser } from "@saasfly/auth";
 
-type AuthObject = Awaited<ReturnType<typeof auth>>;
+type AuthObject = { userId?: string | null };
 
 export const createTRPCContext = async (opts: {
   headers: Headers;
@@ -37,7 +37,7 @@ const createContext = cache(async () => {
       cookie: cookies().toString(),
       "x-trpc-source": "rsc",
     }),
-    auth: await auth(),
+    auth: { userId: (await getCurrentUser())?.id },
   });
 });
 
