@@ -11,6 +11,7 @@ import { Button } from "@saasfly/ui/button";
 import { MainNav } from "./main-nav";
 import { LocaleChange } from "~/components/locale-change";
 import { GitHubStar } from "~/components/github-star";
+import { ModeToggle } from "~/components/mode-toggle";
 import { useSigninModal } from "~/hooks/use-signin-modal";
 import { UserAccountNav } from "./user-account-nav";
 
@@ -83,6 +84,7 @@ export function NavBar({
           <div className="hidden md:flex lg:flex xl:flex">
             <GitHubStar />
           </div>
+          <ModeToggle />
           <LocaleChange url={"/"} />
           {!user ? (
             <Link href={`/${lang}/login`}>

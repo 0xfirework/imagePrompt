@@ -91,8 +91,8 @@ export default function RootLayout({
         >
           <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
+            defaultTheme="light"
+            enableSystem={true}
           >
             <NextDevtoolsProvider>{children}</NextDevtoolsProvider>
             <Analytics />
