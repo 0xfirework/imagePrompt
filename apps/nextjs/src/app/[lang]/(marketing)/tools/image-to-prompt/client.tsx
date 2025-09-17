@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { Button } from "@saasfly/ui/button";
 import { Card } from "@saasfly/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@saasfly/ui/dialog";
+import { toast } from "@saasfly/ui/use-toast";
 import * as Icons from "@saasfly/ui/icons";
 
 export default function Client({ lang }: { lang: string }) {
@@ -30,6 +31,12 @@ export default function Client({ lang }: { lang: string }) {
   function addHistory(item: HistoryItem) {
     setHistory((prev) => {
       const next = [item, ...prev].slice(0, 50);
+      if (prev.length >= 50) {
+        toast({
+          title: "History limit reached",
+          description: "Keeping the latest 50 entries; the oldest was removed.",
+        });
+      }
       try {
         localStorage.setItem("img2prompt_history_v1", JSON.stringify(next));
       } catch {}
@@ -239,7 +246,7 @@ export default function Client({ lang }: { lang: string }) {
 
           <div className="mt-4 grid grid-cols-1 items-center gap-3 md:grid-cols-[auto_1fr_auto]">
             <Button variant="ghost" className="justify-start px-2 text-sm text-violet-700 hover:text-violet-800" onClick={() => setOpenHistory(true)}>
-              View History
+              View History{history.length ? ` (${history.length})` : ""}
             </Button>
             <div className="flex items-center gap-3">
               <label className="text-sm">Prompt Language</label>
@@ -365,7 +372,15 @@ function HistoryDialog({
           <DialogTitle className="flex items-center justify-between">
             <span>Prompt History</span>
             {items.length > 0 ? (
-              <Button variant="outline" size="sm" onClick={onClear}>Clear All</Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  if (window.confirm("Clear all history? This cannot be undone.")) onClear();
+                }}
+              >
+                Clear All
+              </Button>
             ) : null}
           </DialogTitle>
         </DialogHeader>
@@ -377,7 +392,7 @@ function HistoryDialog({
               <div key={it.id} className="rounded-lg border border-border/60 p-3">
                 <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
                   <span>
-                    {new Date(it.date).toLocaleString()} • {it.model} • {it.language}
+                    {formatRelativeTime(it.date)} • {it.model} • {it.language}
                   </span>
                   <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm" onClick={() => onUse(it.prompt)}>Use</Button>
@@ -395,4 +410,17 @@ function HistoryDialog({
       </DialogContent>
     </Dialog>
   );
+}
+
+function formatRelativeTime(iso: string) {
+  const d = new Date(iso).getTime();
+  const diff = Date.now() - d;
+  const sec = Math.round(diff / 1000);
+  if (sec < 60) return `${sec}s ago`;
+  const min = Math.round(sec / 60);
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.round(min / 60);
+  if (hr < 24) return `${hr}h ago`;
+  const day = Math.round(hr / 24);
+  return `${day}d ago`;
 }
