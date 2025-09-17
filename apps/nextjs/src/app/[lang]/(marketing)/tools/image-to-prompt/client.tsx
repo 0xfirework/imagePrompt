@@ -63,12 +63,11 @@ export default function Client({ lang }: { lang: string }) {
 
       <div className="mx-auto mt-8 max-w-6xl">
         {/* Tabs */}
-        <div className="flex gap-2 rounded-t-xl border bg-background p-2 text-sm">
+        <div className="flex gap-2 rounded-t-xl border border-border/60 bg-background p-2 text-sm">
           <Tab active>Image to Prompt</Tab>
           <Tab>Text to Prompt</Tab>
         </div>
-
-        <Card className="rounded-t-none p-4 md:p-6">
+        <Card className="rounded-t-none border-t-0 p-4 md:p-6">
           {/* Upload + Preview */}
           <div className="grid gap-4 md:grid-cols-2">
             <div>
@@ -97,7 +96,7 @@ export default function Client({ lang }: { lang: string }) {
 
               {activeTab === "upload" ? (
                 <div
-                  className="flex h-56 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed bg-muted/30 text-center"
+                  className="flex h-56 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-border/60 bg-muted/30 text-center transition-colors hover:border-violet-400 hover:bg-violet-50/40"
                   onClick={() => fileInput.current?.click()}
                 >
                   <Icons.Post className="mb-3 h-8 w-8 text-violet-600" />
@@ -118,7 +117,7 @@ export default function Client({ lang }: { lang: string }) {
               ) : (
                 <div className="flex items-center gap-2">
                   <input
-                    className="w-full rounded-md border bg-background p-2 text-sm"
+                    className="w-full rounded-md border border-border/60 bg-background p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
                     placeholder="https://.../image.png"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
@@ -131,7 +130,7 @@ export default function Client({ lang }: { lang: string }) {
             </div>
             <div>
               <p className="mb-2 text-sm font-medium">Image Preview</p>
-              <div className="flex h-56 items-center justify-center rounded-md border bg-muted/30">
+              <div className="flex h-56 items-center justify-center rounded-lg border border-border/60 bg-muted/30">
                 {preview ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -179,8 +178,10 @@ export default function Client({ lang }: { lang: string }) {
             ).map((m) => (
               <button
                 key={m.key}
-                className={`rounded-md border p-4 text-left text-sm transition-colors hover:bg-muted/30 ${
-                  model === m.key ? "border-violet-600" : ""
+                className={`rounded-lg border border-border/60 p-4 text-left text-sm transition-colors hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+                  model === m.key
+                    ? "ring-2 ring-violet-600 border-transparent bg-violet-50/40 dark:bg-muted/40"
+                    : ""
                 }`}
                 onClick={() => setModel(m.key)}
                 type="button"
@@ -195,7 +196,7 @@ export default function Client({ lang }: { lang: string }) {
             <div className="flex items-center gap-3">
               <label className="text-sm">Prompt Language</label>
               <select
-                className="rounded-md border bg-background p-2 text-sm"
+                className="rounded-md border border-border/60 bg-background p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
               >
@@ -205,7 +206,7 @@ export default function Client({ lang }: { lang: string }) {
               </select>
             </div>
 
-            <Button onClick={generate} disabled={loading || !preview} size="lg">
+            <Button onClick={generate} disabled={loading || !preview} size="lg" className="bg-violet-600 hover:bg-violet-700 text-white">
               {loading ? (
                 <>
                   <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
@@ -219,7 +220,7 @@ export default function Client({ lang }: { lang: string }) {
 
           <div className="mt-4">
             <textarea
-              className="min-h-[120px] w-full rounded-md border bg-background p-3 text-sm"
+              className="min-h-[140px] w-full rounded-lg border border-border/60 bg-muted/20 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
               placeholder="Generated prompt will appear here"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -242,4 +243,3 @@ function Tab({ active, children }: { active?: boolean; children: React.ReactNode
     </div>
   );
 }
-

@@ -102,8 +102,8 @@ function FeatureCard({
   href?: string;
 }) {
   const content = (
-    <Card className="flex h-full cursor-pointer flex-col items-center gap-3 border-border/50 bg-white/90 p-8 text-center shadow-sm transition-colors hover:bg-muted/20 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:bg-background/40 dark:shadow-none">
-      <div className="flex items-center justify-center rounded-lg bg-violet-50 p-3 dark:bg-muted/30">
+    <Card className="flex h-full cursor-pointer flex-col items-center gap-3 border border-border/60 bg-white p-8 text-center shadow-sm transition-colors hover:bg-muted/20 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:bg-background/40 dark:shadow-none">
+      <div className="flex items-center justify-center rounded-lg bg-violet-50 p-3 ring-1 ring-violet-100 dark:bg-muted/30">
         {icon}
       </div>
       <h3 className="mt-1 text-lg font-semibold leading-tight tracking-tight">{title}</h3>
