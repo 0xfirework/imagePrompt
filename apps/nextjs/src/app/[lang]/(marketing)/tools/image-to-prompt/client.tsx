@@ -88,6 +88,9 @@ export default function Client({ lang }: { lang: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = (await res.json()) as { prompt: string };
       setPrompt(data.prompt);
       addHistory({
@@ -97,6 +100,8 @@ export default function Client({ lang }: { lang: string }) {
         language,
         prompt: data.prompt,
       });
+    } catch (err: any) {
+      toast({ title: "Failed to generate", description: err?.message ?? "Unknown error" });
     } finally {
       setLoading(false);
     }
@@ -150,6 +155,12 @@ export default function Client({ lang }: { lang: string }) {
                 <div
                   className="flex h-56 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-border/60 bg-muted/30 text-center transition-colors hover:border-violet-400 hover:bg-violet-50/40"
                   onClick={() => fileInput.current?.click()}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const f = e.dataTransfer.files?.[0];
+                    if (f) onSelectFile(f);
+                  }}
                 >
                   <Icons.Post className="mb-3 h-8 w-8 text-violet-600" />
                   <p className="text-sm text-muted-foreground">
@@ -164,6 +175,13 @@ export default function Client({ lang }: { lang: string }) {
                     accept="image/*"
                     className="hidden"
                     onChange={() => onSelectFile()}
+                    onPaste={(e) => {
+                      const item = e.clipboardData?.items?.[0];
+                      if (item && item.kind === "file") {
+                        const f = item.getAsFile();
+                        if (f) onSelectFile(f);
+                      }
+                    }}
                   />
                 </div>
               ) : (
