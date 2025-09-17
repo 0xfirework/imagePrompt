@@ -18,7 +18,7 @@ export const getMarketingConfig = async ({
       },
       {
         title: "Tools",
-        href: `/tools/ai-image-generator`,
+        href: `/tools/image-to-prompt`,
       },
       {
         title: dict.marketing.main_nav_features,

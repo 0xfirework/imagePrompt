@@ -35,7 +35,7 @@ export default function ImagePromptLandingPage({
             Inspire ideas, enhance image prompts, and create masterpieces.
           </p>
           <div className="mt-10 flex items-center justify-center gap-4">
-            <Link href={`${base}/tools/ai-image-generator`}>
+            <Link href={`${base}/tools/image-to-prompt`}>
               <Button size="lg" className="px-7 bg-violet-600 hover:bg-violet-700 text-white">
                 Try it now !
               </Button>
@@ -55,6 +55,7 @@ export default function ImagePromptLandingPage({
           icon={<Icons.Post className="h-6 w-6 text-violet-600 dark:text-indigo-300" />}
           title="Image to Prompt"
           desc="Convert image to a detailed prompt to recreate visuals."
+          href={`${base}/tools/image-to-prompt`}
         />
         <FeatureCard
           icon={<Icons.Rocket className="h-6 w-6 text-violet-600 dark:text-indigo-300" />}
