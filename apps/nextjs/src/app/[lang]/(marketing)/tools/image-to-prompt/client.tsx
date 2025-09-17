@@ -71,7 +71,7 @@ export default function Client({ lang }: { lang: string }) {
           {/* Upload + Preview */}
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <div className="mb-3 flex gap-4 border-b pb-2 text-sm">
+              <div className="mb-2 flex gap-4 text-sm">
                 <button
                   className={`border-b-2 px-1 pb-1 ${
                     activeTab === "upload"
