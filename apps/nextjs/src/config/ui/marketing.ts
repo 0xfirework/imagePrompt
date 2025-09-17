@@ -17,6 +17,10 @@ export const getMarketingConfig = async ({
         href: "https://libra.dev/",
       },
       {
+        title: "Tools",
+        href: `/tools/ai-image-generator`,
+      },
+      {
         title: dict.marketing.main_nav_features,
         href: `/#features`,
       },

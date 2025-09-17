@@ -33,7 +33,7 @@ export default function AIImageGeneratorPage({
         </p>
       </header>
 
-      <div className="mx-auto mt-8 grid max-w-5xl gap-6 md:grid-cols-[1.1fr_1fr]">
+      <div className="mx-auto mt-10 grid max-w-6xl gap-6 md:grid-cols-[1.05fr_1fr]">
         <Composer gen={gen} />
         <Gallery images={gen.images} loading={gen.loading} />
       </div>
@@ -100,30 +100,40 @@ function Composer({
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <div className="space-y-2">
             <label className="block text-xs text-muted-foreground">Aspect</label>
-            <select
-              className="w-full rounded-md border bg-background p-2 text-sm"
-              value={aspect}
-              onChange={(e) => setAspect(e.target.value as any)}
-            >
-              <option>1:1</option>
-              <option>16:9</option>
-              <option>3:4</option>
-              <option>4:3</option>
-            </select>
+            <div className="grid grid-cols-4 gap-2">
+              {(["1:1", "16:9", "3:4", "4:3"] as const).map((a) => (
+                <button
+                  key={a}
+                  type="button"
+                  onClick={() => setAspect(a)}
+                  className={`rounded-md border px-2 py-1 text-xs ${
+                    aspect === a ? "border-violet-600 text-violet-600" : ""
+                  }`}
+                >
+                  {a}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="space-y-2">
             <label className="block text-xs text-muted-foreground">Count</label>
-            <select
-              className="w-full rounded-md border bg-background p-2 text-sm"
-              value={count}
-              onChange={(e) => setCount(Number(e.target.value))}
-            >
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                className="h-8 w-8 rounded-md border"
+                onClick={() => setCount((c) => Math.max(1, c - 1))}
+              >
+                -
+              </button>
+              <span className="w-6 text-center text-sm">{count}</span>
+              <button
+                type="button"
+                className="h-8 w-8 rounded-md border"
+                onClick={() => setCount((c) => Math.min(6, c + 1))}
+              >
+                +
+              </button>
+            </div>
           </div>
           <div className="space-y-2">
             <label className="block text-xs text-muted-foreground">Seed</label>

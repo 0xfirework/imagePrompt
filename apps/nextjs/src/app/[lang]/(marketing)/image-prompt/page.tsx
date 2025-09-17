@@ -50,7 +50,7 @@ export default function ImagePromptLandingPage({
       </section>
 
       {/* Feature Cards */}
-      <section className="container mx-auto grid gap-6 px-4 pb-20 md:grid-cols-4">
+      <section className="container mx-auto grid gap-6 px-4 pb-6 md:grid-cols-4">
         <FeatureCard
           icon={<Icons.Post className="h-6 w-6 text-violet-600 dark:text-indigo-300" />}
           title="Image to Prompt"
@@ -72,6 +72,18 @@ export default function ImagePromptLandingPage({
           desc="Turn prompts into stunning visuals with AI-powered rendering."
         />
       </section>
+
+      {/* Helpful links */}
+      <section className="container mx-auto px-4 pb-20 text-center text-sm text-muted-foreground">
+        <span>You may be interested in: </span>
+        <Link href={`${base}/docs`} className="text-violet-600 hover:underline dark:text-indigo-300">
+          What is an Image Prompt?
+        </Link>
+        <span className="mx-2">·</span>
+        <Link href={`${base}/blog`} className="text-violet-600 hover:underline dark:text-indigo-300">
+          How to Write Effective Image Prompt?
+        </Link>
+      </section>
     </div>
   );
 }
@@ -86,11 +98,11 @@ function FeatureCard({
   desc: string;
 }) {
   return (
-    <Card className="flex h-full flex-col items-start gap-2 border-border/50 bg-white/90 p-6 shadow-sm transition-colors hover:bg-muted/20 dark:bg-background/40 dark:shadow-none">
-      <div className="flex items-center justify-center rounded-md bg-muted/30 p-3">
+    <Card className="flex h-full flex-col items-center gap-3 border-border/50 bg-white/90 p-8 text-center shadow-sm transition-colors hover:bg-muted/20 dark:bg-background/40 dark:shadow-none">
+      <div className="flex items-center justify-center rounded-lg bg-violet-50 p-3 dark:bg-muted/30">
         {icon}
       </div>
-      <h3 className="mt-2 text-lg font-semibold leading-tight tracking-tight">{title}</h3>
+      <h3 className="mt-1 text-lg font-semibold leading-tight tracking-tight">{title}</h3>
       <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
     </Card>
   );
