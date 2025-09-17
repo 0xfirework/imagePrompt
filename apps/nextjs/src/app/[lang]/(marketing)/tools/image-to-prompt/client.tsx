@@ -218,13 +218,14 @@ export default function Client({ lang }: { lang: string }) {
             </Button>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 relative">
             <textarea
-              className="min-h-[140px] w-full rounded-lg border border-border/60 bg-muted/20 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="min-h-[160px] w-full rounded-lg border border-border/60 bg-muted/20 p-3 pr-24 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
               placeholder="Generated prompt will appear here"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
             />
+            <CopyButton text={prompt} disabled={!prompt} />
           </div>
         </Card>
       </div>
@@ -234,12 +235,42 @@ export default function Client({ lang }: { lang: string }) {
 
 function Tab({ active, children }: { active?: boolean; children: React.ReactNode }) {
   return (
-    <div
-      className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm ${
-        active ? "bg-muted/40 font-medium" : "text-muted-foreground"
-      }`}
-    >
+    <div className={`relative flex items-center gap-2 rounded-md px-3 py-2 text-sm ${active ? "bg-muted/40 font-medium" : "text-muted-foreground"}`}>
       {children}
+      {active && (
+        <span className="pointer-events-none absolute inset-x-2 -bottom-[6px] h-[2px] rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-400" />
+      )}
     </div>
+  );
+}
+
+function CopyButton({ text, disabled }: { text: string; disabled?: boolean }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1500);
+        } catch {}
+      }}
+      className={`absolute right-2 top-2 inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs shadow-sm backdrop-blur ${
+        disabled ? "cursor-not-allowed opacity-40" : "hover:bg-muted/40"
+      }`}
+      aria-label="Copy generated prompt"
+    >
+      {copied ? (
+        <>
+          <Icons.Check className="h-3.5 w-3.5 text-green-600" /> Copied
+        </>
+      ) : (
+        <>
+          <Icons.Copy className="h-3.5 w-3.5" /> Copy
+        </>
+      )}
+    </button>
   );
 }
