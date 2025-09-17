@@ -35,8 +35,8 @@ export default function ImagePromptLandingPage({
             Inspire ideas, enhance image prompts, and create masterpieces.
           </p>
           <div className="mt-10 flex items-center justify-center gap-4">
-            <Link href={`${base}/pricing`}>
-              <Button size="lg" className="px-7">
+            <Link href={`${base}/tools/ai-image-generator`}>
+              <Button size="lg" className="px-7 bg-violet-600 hover:bg-violet-700 text-white">
                 Try it now !
               </Button>
             </Link>
@@ -75,6 +75,7 @@ export default function ImagePromptLandingPage({
           icon={<Icons.Settings className="h-6 w-6 text-violet-600 dark:text-indigo-300" />}
           title="AI Image Generator"
           desc="Turn prompts into stunning visuals with AI-powered rendering."
+          href={`${base}/tools/ai-image-generator`}
         />
       </section>
 
@@ -97,18 +98,27 @@ function FeatureCard({
   icon,
   title,
   desc,
+  href,
 }: {
   icon: React.ReactNode;
   title: string;
   desc: string;
+  href?: string;
 }) {
-  return (
-    <Card className="flex h-full flex-col items-center gap-3 border-border/50 bg-white/90 p-8 text-center shadow-sm transition-colors hover:bg-muted/20 dark:bg-background/40 dark:shadow-none">
+  const content = (
+    <Card className="flex h-full cursor-pointer flex-col items-center gap-3 border-border/50 bg-white/90 p-8 text-center shadow-sm transition-colors hover:bg-muted/20 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:bg-background/40 dark:shadow-none">
       <div className="flex items-center justify-center rounded-lg bg-violet-50 p-3 dark:bg-muted/30">
         {icon}
       </div>
       <h3 className="mt-1 text-lg font-semibold leading-tight tracking-tight">{title}</h3>
       <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
     </Card>
+  );
+  return href ? (
+    <Link href={href} aria-label={title} className="block">
+      {content}
+    </Link>
+  ) : (
+    content
   );
 }
