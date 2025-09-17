@@ -45,11 +45,6 @@ export default function ImagePromptLandingPage({
                 Tutorials
               </Button>
             </Link>
-            <Link href={`${base}/tools/ai-image-generator`}>
-              <Button size="lg" variant="outline" className="px-7">
-                AI Image Generator
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
