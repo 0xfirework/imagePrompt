@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 
 import { Button } from "@saasfly/ui/button";
 import { Card } from "@saasfly/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@saasfly/ui/dialog";
 import * as Icons from "@saasfly/ui/icons";
 
 export default function Client({ lang }: { lang: string }) {
@@ -15,6 +16,43 @@ export default function Client({ lang }: { lang: string }) {
   const [model, setModel] = useState("general");
   const [language, setLanguage] = useState("English");
   const [prompt, setPrompt] = useState("");
+  // history
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [openHistory, setOpenHistory] = useState(false);
+
+  React.useEffect(() => {
+    try {
+      const raw = localStorage.getItem("img2prompt_history_v1");
+      if (raw) setHistory(JSON.parse(raw));
+    } catch {}
+  }, []);
+
+  function addHistory(item: HistoryItem) {
+    setHistory((prev) => {
+      const next = [item, ...prev].slice(0, 50);
+      try {
+        localStorage.setItem("img2prompt_history_v1", JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  }
+  function removeHistory(id: string) {
+    setHistory((prev) => {
+      const next = prev.filter((h) => h.id !== id);
+      try {
+        localStorage.setItem("img2prompt_history_v1", JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  }
+  function clearHistory() {
+    setHistory(() => {
+      try {
+        localStorage.removeItem("img2prompt_history_v1");
+      } catch {}
+      return [];
+    });
+  }
   const [loading, setLoading] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -45,6 +83,13 @@ export default function Client({ lang }: { lang: string }) {
       });
       const data = (await res.json()) as { prompt: string };
       setPrompt(data.prompt);
+      addHistory({
+        id: `${Date.now()}`,
+        date: new Date().toISOString(),
+        model,
+        language,
+        prompt: data.prompt,
+      });
     } finally {
       setLoading(false);
     }
@@ -192,7 +237,10 @@ export default function Client({ lang }: { lang: string }) {
             ))}
           </div>
 
-          <div className="mt-4 grid grid-cols-1 items-center gap-3 md:grid-cols-[1fr_auto]">
+          <div className="mt-4 grid grid-cols-1 items-center gap-3 md:grid-cols-[auto_1fr_auto]">
+            <Button variant="ghost" className="justify-start px-2 text-sm text-violet-700 hover:text-violet-800" onClick={() => setOpenHistory(true)}>
+              View History
+            </Button>
             <div className="flex items-center gap-3">
               <label className="text-sm">Prompt Language</label>
               <select
@@ -228,6 +276,18 @@ export default function Client({ lang }: { lang: string }) {
             <CopyButton text={prompt} disabled={!prompt} />
           </div>
         </Card>
+        {/* History Dialog */}
+        <HistoryDialog
+          open={openHistory}
+          onOpenChange={setOpenHistory}
+          items={history}
+          onUse={(p) => {
+            setPrompt(p);
+            setOpenHistory(false);
+          }}
+          onRemove={removeHistory}
+          onClear={clearHistory}
+        />
       </div>
     </div>
   );
@@ -272,5 +332,67 @@ function CopyButton({ text, disabled }: { text: string; disabled?: boolean }) {
         </>
       )}
     </button>
+  );
+}
+
+type HistoryItem = {
+  id: string;
+  date: string; // ISO
+  model: string;
+  language: string;
+  prompt: string;
+};
+
+function HistoryDialog({
+  open,
+  onOpenChange,
+  items,
+  onUse,
+  onRemove,
+  onClear,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  items: HistoryItem[];
+  onUse: (prompt: string) => void;
+  onRemove: (id: string) => void;
+  onClear: () => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between">
+            <span>Prompt History</span>
+            {items.length > 0 ? (
+              <Button variant="outline" size="sm" onClick={onClear}>Clear All</Button>
+            ) : null}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="max-h-[60vh] space-y-3 overflow-auto pr-1">
+          {items.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No history yet. Generate a prompt to populate history.</p>
+          ) : (
+            items.map((it) => (
+              <div key={it.id} className="rounded-lg border border-border/60 p-3">
+                <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
+                  <span>
+                    {new Date(it.date).toLocaleString()} • {it.model} • {it.language}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={() => onUse(it.prompt)}>Use</Button>
+                    <Button variant="ghost" size="sm" onClick={() => navigator.clipboard.writeText(it.prompt)}>Copy</Button>
+                    <Button variant="ghost" size="sm" onClick={() => onRemove(it.id)}>Delete</Button>
+                  </div>
+                </div>
+                <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                  {it.prompt}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
