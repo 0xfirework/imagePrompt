@@ -10,7 +10,8 @@ import { toast } from "@saasfly/ui/use-toast";
 import * as Icons from "@saasfly/ui/icons";
 
 export default function Client({ lang }: { lang: string }) {
-  const [activeTab, setActiveTab] = useState<"upload" | "url">("upload");
+  // Default to URL mode to leverage server-side direct URL workflow
+  const [activeTab, setActiveTab] = useState<"upload" | "url">("url");
   const [file, setFile] = useState<File | null>(null);
   const [url, setUrl] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
@@ -88,17 +89,22 @@ export default function Client({ lang }: { lang: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      let data: any = null;
+      try {
+        data = await res.json();
+      } catch {}
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
+        const msg = (data && (data.error || data.message)) ? String(data.error || data.message) : `HTTP ${res.status}`;
+        throw new Error(msg);
       }
-      const data = (await res.json()) as { prompt: string };
-      setPrompt(data.prompt);
+      const promptData = data as { prompt: string };
+      setPrompt(promptData.prompt);
       addHistory({
         id: `${Date.now()}`,
         date: new Date().toISOString(),
         model,
         language,
-        prompt: data.prompt,
+        prompt: promptData.prompt,
       });
     } catch (err: any) {
       toast({ title: "Failed to generate", description: err?.message ?? "Unknown error" });
