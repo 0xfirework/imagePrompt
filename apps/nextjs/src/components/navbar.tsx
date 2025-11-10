@@ -45,6 +45,11 @@ export function NavBar({
   const signInModal = useSigninModal();
   const segment = useSelectedLayoutSegment();
 
+  // Hide NavBar on tools pages
+  if (segment === "tools") {
+    return null;
+  }
+
   return (
     <header
       className={`sticky top-0 z-40 flex w-full justify-center border-border bg-background/60 backdrop-blur-xl transition-all ${
