@@ -1,5 +1,5 @@
 import type { Locale } from "~/config/i18n-config";
-import { redirect } from "next/navigation";
+import ImagePromptLandingPage from "./image-prompt/page";
 
 const people = [
   {
@@ -47,5 +47,5 @@ export default async function IndexPage({
 }: {
   params: { lang: Locale };
 }) {
-  redirect(`/${lang}/tools/image-to-prompt`);
+  return <ImagePromptLandingPage params={{ lang }} />;
 }

@@ -50,6 +50,7 @@ export function NavBar({
 
   // 简洁导航：tools 页面仅保留 Logo + 登录/头像
   if (isTools) {
+    const pathWithoutLang = (pathname ?? `/${lang}`).replace(new RegExp(`^/${lang}`), "") || "/";
     return (
       <header
         className={`sticky top-0 z-40 flex w-full justify-center border-border bg-background/60 backdrop-blur-xl transition-all ${
@@ -64,6 +65,7 @@ export function NavBar({
           </div>
 
           <div className="flex items-center space-x-3">
+            <LocaleChange url={pathWithoutLang.replace(/^\//, "")} />
             {!user ? (
               <Link href={`/${lang}/login?from=${encodeURIComponent(pathname ?? `/${lang}`)}`}>
                 <Button variant="outline" size="sm">
