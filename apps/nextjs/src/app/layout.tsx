@@ -3,14 +3,12 @@ import localFont from "next/font/local";
 
 import "~/styles/globals.css";
 
-import { NextDevtoolsProvider } from "@next-devtools/core";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { cn } from "@saasfly/ui";
 import { Toaster } from "@saasfly/ui/toaster";
 
-import { TailwindIndicator } from "~/components/tailwind-indicator";
 import { ThemeProvider } from "~/components/theme-provider";
 import { i18n } from "~/config/i18n-config";
 import { siteConfig } from "~/config/site";
@@ -67,7 +65,7 @@ export const metadata = {
     // shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-  metadataBase: new URL("https://show.saasfly.io/"),
+  metadataBase: new URL("https://xiedaoairdrop.quest/"),
   // manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
@@ -94,11 +92,10 @@ export default function RootLayout({
             defaultTheme="light"
             enableSystem={true}
           >
-            <NextDevtoolsProvider>{children}</NextDevtoolsProvider>
+            {children}
             <Analytics />
             <SpeedInsights />
             <Toaster />
-            <TailwindIndicator />
           </ThemeProvider>
         </body>
       </html>

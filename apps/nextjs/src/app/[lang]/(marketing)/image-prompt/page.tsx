@@ -75,17 +75,7 @@ export default function ImagePromptLandingPage({
         />
       </section>
 
-      {/* Helpful links */}
-      <section className="container mx-auto px-4 pb-20 text-center text-sm text-muted-foreground">
-        <span>You may be interested in: </span>
-        <Link href={`${base}/docs`} className="text-violet-600 hover:underline dark:text-indigo-300">
-          What is an Image Prompt?
-        </Link>
-        <span className="mx-2">·</span>
-        <Link href={`${base}/blog`} className="text-violet-600 hover:underline dark:text-indigo-300">
-          How to Write Effective Image Prompt?
-        </Link>
-      </section>
+      {/* Removed extra helpful links to keep the page clean */}
     </div>
   );
 }

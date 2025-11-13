@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#7ddc6e"/>
+      <stop offset="100%" stop-color="#34c759"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="24" fill="url(#g)"/>
+  <!-- Frog face -->
+  <circle cx="64" cy="72" r="34" fill="#48c774"/>
+  <!-- Eyes -->
+  <circle cx="46" cy="52" r="10" fill="#48c774"/>
+  <circle cx="82" cy="52" r="10" fill="#48c774"/>
+  <circle cx="46" cy="52" r="5" fill="#fff"/>
+  <circle cx="82" cy="52" r="5" fill="#fff"/>
+  <circle cx="46" cy="54" r="3" fill="#111"/>
+  <circle cx="82" cy="54" r="3" fill="#111"/>
+  <!-- Smile -->
+  <path d="M46 84 C 56 94, 72 94, 82 84" stroke="#0a0" stroke-width="4" fill="none" stroke-linecap="round"/>
+</svg>

@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { signIn } from "next-auth/react";
 
 import { cn } from "@saasfly/ui";
@@ -12,7 +11,7 @@ import * as Icons from "@saasfly/ui/icons";
 
 export default function LoginPage() {
   // const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false);
+  const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
 
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
@@ -34,14 +33,14 @@ export default function LoginPage() {
             translateZ="50"
             className="text-xl font-bold text-neutral-600 dark:text-white"
           >
-            Start a beautiful new life
+            欢迎登录 imagePrompt
           </CardItem>
           <CardItem
             as="p"
             translateZ="60"
             className="mt-2 max-w-sm text-sm text-neutral-500 dark:text-neutral-300"
           >
-            Admin Dashboard
+            管理后台
           </CardItem>
           <CardItem translateZ="100" className="mt-4 w-full">
             <Image
@@ -53,35 +52,27 @@ export default function LoginPage() {
             />
           </CardItem>
           <div className="mt-20 flex items-center justify-between">
-            <CardItem
-              translateZ={20}
-              as={Link}
-              href="https://github.com/saasfly/saasfly"
-              target="__blank"
-              className="rounded-xl px-4 py-2 text-xs font-normal dark:text-white"
-            >
-              You know this is not easy for us
-            </CardItem>
+            <div />
             <button
               type="button"
               className={cn(buttonVariants({ variant: "outline" }))}
               onClick={() => {
-                setIsGitHubLoading(true);
-                signIn("github", {
+                setIsGoogleLoading(true);
+                signIn("google", {
                   redirect: true,
                   callbackUrl: "http://localhost:3000/admin/dashboard",
                 }).catch((error) => {
-                  console.error("GitHub signIn error:", error);
+                  console.error("Google signIn error:", error);
                 });
               }}
-              disabled={isGitHubLoading}
+              disabled={isGoogleLoading}
             >
-              {isGitHubLoading ? (
+              {isGoogleLoading ? (
                 <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                <Icons.GitHub className="mr-2 h-4 w-4" />
+                <Icons.Google className="mr-2 h-4 w-4" />
               )}{" "}
-              Github
+              使用 Google 登录
             </button>
           </div>
         </CardBody>

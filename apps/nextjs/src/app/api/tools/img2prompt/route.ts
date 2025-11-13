@@ -65,7 +65,7 @@ async function cozeUpload({ buf, mime, filename }: { buf: Buffer; mime: string; 
   return String(fileId);
 }
 
-async function runWorkflow({ fileId, imageUrl, language, model }: { fileId?: string; imageUrl?: string; language?: string; model?: string }) {
+async function runWorkflow({ fileId, imageUrl, language, model, text }: { fileId?: string; imageUrl?: string; language?: string; model?: string; text?: string }) {
   if (!env.COZE_TOKEN || !env.COZE_WORKFLOW_ID) throw new Error("COZE credentials not configured");
   // Allow custom parameter keys expected by your Coze workflow
   const promptTypeKey = (env as any).COZE_PARAM_PROMPT_TYPE ?? "promptType";
@@ -82,7 +82,10 @@ async function runWorkflow({ fileId, imageUrl, language, model }: { fileId?: str
     return "general";
   })();
 
-  const userQuery = `Generate a ${mappedPromptType} style image prompt in ${language ?? "English"}.`;
+  const userQuery =
+    typeof text === "string" && text.trim().length > 0
+      ? text.trim()
+      : `Generate a ${mappedPromptType} style image prompt in ${language ?? "English"}.`;
 
   const payload = {
     workflow_id: env.COZE_WORKFLOW_ID,
@@ -167,9 +170,10 @@ export async function POST(req: NextRequest) {
     const body = (await req.json()) as {
       imageDataUrl?: string;
       imageUrl?: string;
-      source: "upload" | "url";
+      source: "upload" | "url" | "text";
       model: string;
       language?: string;
+      text?: string;
     };
 
     let fileMeta: { buf: Buffer; mime: string; filename: string } | null = null;
@@ -179,7 +183,7 @@ export async function POST(req: NextRequest) {
     } else if (body.imageUrl) {
       // Prefer passing URL directly to Coze instead of uploading
       imageUrlForWorkflow = body.imageUrl;
-    } else {
+    } else if (body.source !== "text") {
       throw new Error("No image provided");
     }
 
@@ -201,7 +205,7 @@ export async function POST(req: NextRequest) {
       fileId = await cozeUpload(fileMeta);
     }
 
-    const prompt = await runWorkflow({ fileId, imageUrl: imageUrlForWorkflow, language: body.language, model: body.model });
+    const prompt = await runWorkflow({ fileId, imageUrl: imageUrlForWorkflow, language: body.language, model: body.model, text: body.text });
     return NextResponse.json({ prompt });
   } catch (err: any) {
     console.error("[img2prompt]", err);

@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import type { User } from "@saasfly/auth";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
@@ -44,10 +44,45 @@ export function NavBar({
   const scrolled = useScroll(50);
   const signInModal = useSigninModal();
   const segment = useSelectedLayoutSegment();
+  const pathname = usePathname();
 
-  // Hide NavBar on tools pages
-  if (segment === "tools") {
-    return null;
+  const isTools = segment === "tools";
+
+  // 简洁导航：tools 页面仅保留 Logo + 登录/头像
+  if (isTools) {
+    return (
+      <header
+        className={`sticky top-0 z-40 flex w-full justify-center border-border bg-background/60 backdrop-blur-xl transition-all ${
+          scroll ? (scrolled ? "border-b" : "bg-background/0") : "border-b"
+        }`}
+      >
+        <div className="container flex h-16 items-center justify-between py-4">
+          <div className="flex items-center">
+            <Link href={`/${lang}`} className="hidden items-center space-x-2 md:flex">
+              <div className="text-3xl">image-to-prompt</div>
+            </Link>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            {!user ? (
+              <Link href={`/${lang}/login?from=${encodeURIComponent(pathname ?? `/${lang}`)}`}>
+                <Button variant="outline" size="sm">
+                  {typeof marketing.login === "string" ? marketing.login : "Login"}
+                </Button>
+              </Link>
+            ) : null}
+
+            {user ? (
+              <UserAccountNav user={user} params={{ lang: `${lang}` }} dict={dropdown} />
+            ) : (
+              <Button className="px-3" variant="default" size="sm" onClick={signInModal.onOpen}>
+                {typeof marketing.signup === "string" ? marketing.signup : "Sign up"}
+              </Button>
+            )}
+          </div>
+        </div>
+      </header>
+    );
   }
 
   return (
@@ -92,7 +127,7 @@ export function NavBar({
           <ModeToggle />
           <LocaleChange url={"/"} />
           {!user ? (
-            <Link href={`/${lang}/login`}>
+            <Link href={`/${lang}/login?from=${encodeURIComponent(pathname ?? `/${lang}`)}`}>
               <Button variant="outline" size="sm">
                 {typeof marketing.login === "string"
                   ? marketing.login

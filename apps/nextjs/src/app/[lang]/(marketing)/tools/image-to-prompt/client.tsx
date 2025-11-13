@@ -78,7 +78,7 @@ export default function Client({ lang }: { lang: string }) {
     setPrompt("");
     try {
       const body: any = {
-        source: activeTab === "upload" ? "upload" : "url",
+        source: activeTab,
         model,
         language,
       };
@@ -117,7 +117,7 @@ export default function Client({ lang }: { lang: string }) {
     <div className="container mx-auto px-4 py-10 md:py-14">
       <header className="mx-auto max-w-4xl text-center">
         <h1 className="font-heading text-4xl font-semibold tracking-tight md:text-6xl">
-          Free Image to Prompt Generator
+          图片转提示词工具
         </h1>
         <p className="mt-4 text-base text-muted-foreground md:text-lg">
           Convert Image to Prompt to generate your own image
@@ -128,7 +128,6 @@ export default function Client({ lang }: { lang: string }) {
         {/* Tabs */}
         <div className="flex gap-2 rounded-t-xl border border-border/60 bg-background p-2 text-sm">
           <Tab active>Image to Prompt</Tab>
-          <Tab>Text to Prompt</Tab>
         </div>
         <Card className="rounded-t-none border-t-0 p-4 md:p-6">
           {/* Upload + Preview */}
@@ -190,7 +189,7 @@ export default function Client({ lang }: { lang: string }) {
                     }}
                   />
                 </div>
-              ) : (
+              ) : activeTab === "url" ? (
                 <div className="flex items-center gap-2">
                   <input
                     className="w-full rounded-md border border-border/60 bg-background p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
@@ -202,7 +201,7 @@ export default function Client({ lang }: { lang: string }) {
                     Preview
                   </Button>
                 </div>
-              )}
+              ) : null}
             </div>
             <div>
               <p className="mb-2 text-sm font-medium">Image Preview</p>
@@ -285,7 +284,12 @@ export default function Client({ lang }: { lang: string }) {
               </select>
             </div>
 
-            <Button onClick={generate} disabled={loading || !preview} size="lg" className="bg-violet-600 hover:bg-violet-700 text-white">
+            <Button
+              onClick={generate}
+              disabled={loading || !preview}
+              size="lg"
+              className="bg-violet-600 hover:bg-violet-700 text-white"
+            >
               {loading ? (
                 <>
                   <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />

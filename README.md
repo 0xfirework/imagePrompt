@@ -78,7 +78,7 @@ See more documentation at <https://document.saasfly.io>
 
 ### 🖱 One Click Template
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,NEXTAUTH_URL,NEXTAUTH_SECRET,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,RESEND_API_KEY,RESEND_FROM&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,NEXTAUTH_URL,NEXTAUTH_SECRET,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,RESEND_API_KEY,RESEND_FROM&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs)
 
 ### 📋 Prerequisites
 
@@ -254,3 +254,9 @@ Made with [contrib.rocks](https://contrib.rocks).
 [github-license-badge-link]: https://github.com/saasfly/saasfly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD
 [made-by-nextify-badge-link]: https://nextify.ltd
+
+## Contributing
+
+Please read the contributor guide in AGENTS.md before submitting changes:
+
+- Repository Guidelines: ./AGENTS.md
