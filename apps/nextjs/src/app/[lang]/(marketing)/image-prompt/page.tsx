@@ -5,11 +5,40 @@ import { Card } from "@saasfly/ui/card";
 import * as Icons from "@saasfly/ui/icons";
 
 import type { Locale } from "~/config/i18n-config";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Image Prompt Landing",
-  description: "Create better AI art with Image Prompt.",
-};
+export function generateMetadata({ params }: { params: { lang: Locale } }): Metadata {
+  const base = `/${params.lang}`;
+  return {
+    title: "Image to Prompt Generator",
+    description:
+      "Free image to prompt generator: convert any image into a detailed image prompt in seconds. Perfect prompt generator for AI art.",
+    keywords: [
+      "image to prompt",
+      "image-to-prompt",
+      "image to prompt generator",
+      "impage to prompt generator",
+      "image prompt",
+      "prompt generator",
+    ],
+    alternates: {
+      canonical: `${base}/image-prompt`,
+    },
+    openGraph: {
+      title: "Image to Prompt Generator",
+      description:
+        "Convert images into rich prompts. The easiest image prompt generator for AI art and diffusion models.",
+      url: `${base}/image-prompt`,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Image to Prompt Generator",
+      description:
+        "Turn images into detailed prompts. Free and fast prompt generator for AI art.",
+    },
+  };
+}
 
 export default function ImagePromptLandingPage({
   params: { lang },
@@ -23,16 +52,10 @@ export default function ImagePromptLandingPage({
       <section className="container mx-auto px-4 py-16 md:py-28">
         <div className="mx-auto max-w-5xl text-center">
           <h1 className="text-balance font-heading text-5xl font-semibold tracking-tight md:text-7xl md:leading-[1.1]">
-            Create Better AI Art
-            <br />
-            with
-            {" "}
-            <span className="bg-gradient-to-r from-indigo-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
-              Image Prompt
-            </span>
+            Free Image to Prompt Generator
           </h1>
           <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-            Inspire ideas, enhance image prompts, and create masterpieces.
+            Convert any image into a detailed image prompt. A fast, accurate prompt generator for AI art.
           </p>
           <div className="mt-10 flex items-center justify-center gap-4">
             <Link href={`${base}/tools/image-to-prompt`}>
@@ -73,6 +96,28 @@ export default function ImagePromptLandingPage({
           desc="Turn prompts into stunning visuals with AI-powered rendering."
           href={`${base}/tools/ai-image-generator`}
         />
+      </section>
+
+      {/* SEO content blocks */}
+      <section className="container mx-auto max-w-5xl px-4 pb-16 text-muted-foreground">
+        <h2 className="mb-3 text-2xl font-semibold text-foreground">What is an Image to Prompt Generator?</h2>
+        <p className="leading-relaxed">
+          An <strong>image to prompt</strong> or <strong>image to prompt generator</strong> turns a picture into a
+          structured <strong>image prompt</strong> you can reuse in AI art tools. It extracts style, subject,
+          composition and lighting so your <strong>prompt generator</strong> results stay consistent.
+        </p>
+        <h2 className="mb-3 mt-8 text-2xl font-semibold text-foreground">How to use</h2>
+        <ol className="list-decimal pl-5 leading-relaxed">
+          <li>Open the <strong>Image to Prompt Generator</strong> and upload or paste an image URL.</li>
+          <li>Select a target model style (General, Flux, Midjourney, Stable Diffusion).</li>
+          <li>Click Generate to get a ready‑to‑use <strong>image prompt</strong>.</li>
+        </ol>
+        <h2 className="mb-3 mt-8 text-2xl font-semibold text-foreground">Why this prompt generator?</h2>
+        <ul className="list-disc pl-5 leading-relaxed">
+          <li>Purpose‑built for fast, accurate <strong>image to prompt</strong> conversion.</li>
+          <li>Human‑readable wording that works across popular models.</li>
+          <li>Free to start — try the <Link className="underline" href={`${base}/tools/image-to-prompt`}>image to prompt generator</Link> now.</li>
+        </ul>
       </section>
 
       {/* Removed extra helpful links to keep the page clean */}
