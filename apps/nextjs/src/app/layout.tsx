@@ -5,6 +5,7 @@ import "~/styles/globals.css";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 
 import { cn } from "@saasfly/ui";
 import { Toaster } from "@saasfly/ui/toaster";
@@ -76,7 +77,19 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en" suppressHydrationWarning>
-        <head />
+        <head>
+          <Script id="baidu-analytics" strategy="afterInteractive">
+            {`
+              var _hmt = _hmt || [];
+              (function() {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?94f63729c1dccea357d46d14ba30dffc";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+              })();
+            `}
+          </Script>
+        </head>
         {/*<Suspense>*/}
         {/*  <PostHogPageview />*/}
         {/*</Suspense>*/}
